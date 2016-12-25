@@ -1,10 +1,10 @@
 package de.kaufland.ksilence.repository;
 
-import de.kaufland.ksilence.model.Message;
+import de.kaufland.ksilence.model.MobileMessage;
 import org.springframework.data.repository.CrudRepository;
 
-public interface MessageRepository extends CrudRepository<Message, Long> {
+public interface MessageRepository extends CrudRepository<MobileMessage, Long> {
 
-    Iterable<Message> findAll();
+    Iterable<MobileMessage> findAll();
 
 }

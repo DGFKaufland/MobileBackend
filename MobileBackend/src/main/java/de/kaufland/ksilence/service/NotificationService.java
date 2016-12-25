@@ -5,8 +5,8 @@ import com.notnoop.apns.ApnsService;
 import de.kaufland.ksilence.api.Api;
 import de.kaufland.ksilence.exception.EmptyParameterException;
 import de.kaufland.ksilence.exception.EntityNotFoundException;
-import de.kaufland.ksilence.model.Contact;
-import de.kaufland.ksilence.model.Notification;
+import de.kaufland.ksilence.model.MobileContact;
+import de.kaufland.ksilence.model.MobileNotification;
 import de.kaufland.ksilence.model.OperatingSystem;
 import de.kaufland.ksilence.repository.ContactRepository;
 import de.kaufland.ksilence.repository.NotificationRepository;
@@ -31,12 +31,12 @@ public class NotificationService {
     @Autowired
     ContactRepository contactRepository;
 
-    public Iterable<Notification> readAll() {
+    public Iterable<MobileNotification> readAll() {
         log.debug("Read all NOTIFICATIONS");
         return notificationRepository.findAll();
     }
 
-    public Notification create(Notification pNotification) throws IOException {
+    public MobileNotification create(MobileNotification pNotification) throws IOException {
         log.debug("Create NOTIFICATION: " + pNotification);
 
         if(pNotification.getToContactId() == 0 || pNotification.getToContactId() < 0){
@@ -53,11 +53,11 @@ public class NotificationService {
 
         // Send notification AFTER saving into DB
         // Important, because id is needed for function of notification action buttons
-        Notification newNotification = notificationRepository.save(pNotification);
+        MobileNotification newNotification = notificationRepository.save(pNotification);
 
         // Build message
-        Contact fromContact = contactRepository.findById(pNotification.getFromContactId());
-        Contact toContact = contactRepository.findById(pNotification.getToContactId());
+        MobileContact fromContact = contactRepository.findById(pNotification.getFromContactId());
+        MobileContact toContact = contactRepository.findById(pNotification.getToContactId());
         String msg = "";
 
         if(toContact.getOs() == OperatingSystem.ANDROID) {
@@ -101,7 +101,7 @@ public class NotificationService {
         return newNotification;
     }
 
-    private void sendNotification(Notification pNotification, String message) throws IOException{
+    private void sendNotification(MobileNotification pNotification, String message) throws IOException{
         URL url = new URL("https://gcm-http.googleapis.com/gcm/send");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -124,21 +124,21 @@ public class NotificationService {
         conn.disconnect();
     }
 
-    public void update(Notification pNotification) throws IOException {
+    public void update(MobileNotification pNotification) throws IOException {
         log.debug("Update NOTIFICATION: (" + pNotification.getId() + ")");
-        Notification existingNotification = notificationRepository.findById(pNotification.getId());
+        MobileNotification existingNotification = notificationRepository.findById(pNotification.getId());
 
         if (existingNotification == null) {
             throw new EntityNotFoundException();
         }
 
         log.debug("From: " + existingNotification);
-        Notification updatedNotification = notificationRepository.save(pNotification);
+        MobileNotification updatedNotification = notificationRepository.save(pNotification);
         log.debug("To:   " + updatedNotification);
 
         // Send updated status to sender contact
-        Contact fromContact = contactRepository.findById(pNotification.getFromContactId());
-        Contact toContact = contactRepository.findById(pNotification.getToContactId());
+        MobileContact fromContact = contactRepository.findById(pNotification.getFromContactId());
+        MobileContact toContact = contactRepository.findById(pNotification.getToContactId());
 
         if(fromContact.getOs() == OperatingSystem.ANDROID) {
             String msg = "";
@@ -166,9 +166,9 @@ public class NotificationService {
         }
     }
 
-    public Notification read(String pNotificationId) {
+    public MobileNotification read(String pNotificationId) {
         log.debug("Read NOTIFICATION (" + pNotificationId + ")");
-        Notification n = notificationRepository.findById(Long.valueOf(pNotificationId));
+        MobileNotification n = notificationRepository.findById(Long.valueOf(pNotificationId));
 
         if(n == null){
             throw new EntityNotFoundException();

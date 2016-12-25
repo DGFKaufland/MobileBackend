@@ -1,6 +1,6 @@
 package de.kaufland.ksilence.api;
 
-import de.kaufland.ksilence.model.Message;
+import de.kaufland.ksilence.model.MobileMessage;
 import de.kaufland.ksilence.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,8 @@ public class MessageController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value=Api.Path.MESSAGES, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<Message>> readAll() throws IOException {
-        return new ResponseEntity<Iterable<Message>>(messageService.readAll(), HttpStatus.OK);
+    public ResponseEntity<Iterable<MobileMessage>> readAll() throws IOException {
+        return new ResponseEntity<Iterable<MobileMessage>>(messageService.readAll(), HttpStatus.OK);
     }
 
 }

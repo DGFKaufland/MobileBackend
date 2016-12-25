@@ -1,6 +1,6 @@
 package de.kaufland.ksilence.service;
 
-import de.kaufland.ksilence.model.Message;
+import de.kaufland.ksilence.model.MobileMessage;
 import de.kaufland.ksilence.repository.MessageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ public class MessageService {
     @Autowired
     MessageRepository messageRepository;
 
-    public Iterable<Message> readAll() {
+    public Iterable<MobileMessage> readAll() {
         log.debug("Read all MESSAGES");
         return messageRepository.findAll();
     }

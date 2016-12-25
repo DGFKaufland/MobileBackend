@@ -1,8 +1,8 @@
 package de.kaufland.ksilence;
 
 import de.kaufland.ksilence.api.Api;
-import de.kaufland.ksilence.model.Department;
-import de.kaufland.ksilence.model.Message;
+import de.kaufland.ksilence.model.MobileDepartment;
+import de.kaufland.ksilence.model.MobileMessage;
 import de.kaufland.ksilence.repository.DepartmentRepository;
 import de.kaufland.ksilence.repository.MessageRepository;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class DepartmentControllerTest {
 
     @Test
     public void testReadAll(){
-        ResponseEntity<Department[]> response = REST.getForEntity(URL, Department[].class);
+        ResponseEntity<MobileDepartment[]> response = REST.getForEntity(URL, MobileDepartment[].class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(departmentRepository.count(), response.getBody().length);

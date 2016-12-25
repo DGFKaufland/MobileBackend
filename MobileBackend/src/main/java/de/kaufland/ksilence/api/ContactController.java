@@ -1,6 +1,6 @@
 package de.kaufland.ksilence.api;
 
-import de.kaufland.ksilence.model.Contact;
+import de.kaufland.ksilence.model.MobileContact;
 import de.kaufland.ksilence.service.ContactService;
 import org.h2.server.web.WebServlet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +19,19 @@ public class ContactController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value=Api.Path.CONTACTS, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<Contact>> readAll(){
-        return new ResponseEntity<Iterable<Contact>>(contactService.readAll(), HttpStatus.OK);
+    public ResponseEntity<Iterable<MobileContact>> readAll(){
+        return new ResponseEntity<Iterable<MobileContact>>(contactService.readAll(), HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = Api.Path.CONTACTS, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Contact> create(@RequestBody Contact pContact){
-        return new ResponseEntity<Contact>(contactService.create(pContact), HttpStatus.CREATED);
+    public ResponseEntity<MobileContact> create(@RequestBody MobileContact pContact){
+        return new ResponseEntity<MobileContact>(contactService.create(pContact), HttpStatus.CREATED);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = Api.Path.CONTACT, method = RequestMethod.PUT)
-    public ResponseEntity<Void> update(@PathVariable("id") String pContactId, @RequestBody Contact contact) {
+    public ResponseEntity<Void> update(@PathVariable("id") String pContactId, @RequestBody MobileContact contact) {
         contactService.update(contact);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

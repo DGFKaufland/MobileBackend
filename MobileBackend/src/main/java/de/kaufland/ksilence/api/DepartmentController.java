@@ -1,6 +1,6 @@
 package de.kaufland.ksilence.api;
 
-import de.kaufland.ksilence.model.Department;
+import de.kaufland.ksilence.model.MobileDepartment;
 import de.kaufland.ksilence.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,8 @@ public class DepartmentController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value=Api.Path.DEPARTMENTS, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<Department>> readAll() throws IOException {
-        return new ResponseEntity<Iterable<Department>>(departmentService.readAll(), HttpStatus.OK);
+    public ResponseEntity<Iterable<MobileDepartment>> readAll() throws IOException {
+        return new ResponseEntity<Iterable<MobileDepartment>>(departmentService.readAll(), HttpStatus.OK);
     }
 
 }

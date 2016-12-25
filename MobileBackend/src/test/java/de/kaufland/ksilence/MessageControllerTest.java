@@ -1,7 +1,7 @@
 package de.kaufland.ksilence;
 
 import de.kaufland.ksilence.api.Api;
-import de.kaufland.ksilence.model.Message;
+import de.kaufland.ksilence.model.MobileMessage;
 import de.kaufland.ksilence.repository.MessageRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +31,7 @@ public class MessageControllerTest {
 
     @Test
     public void testReadAll(){
-        ResponseEntity<Message[]> response = REST.getForEntity(URL, Message[].class);
+        ResponseEntity<MobileMessage[]> response = REST.getForEntity(URL, MobileMessage[].class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(messageRepository.count(), response.getBody().length);

@@ -1,7 +1,7 @@
 package de.kaufland.ksilence;
 
 import de.kaufland.ksilence.api.Api;
-import de.kaufland.ksilence.model.Contact;
+import de.kaufland.ksilence.model.MobileContact;
 import de.kaufland.ksilence.model.OperatingSystem;
 import de.kaufland.ksilence.repository.ContactRepository;
 import org.junit.After;
@@ -46,7 +46,7 @@ public class ContactControllerTest {
 
     @Before
     public void setUp() {
-        Contact newContact = new Contact();
+        MobileContact newContact = new MobileContact();
         newContact.setName(CONTACT1_NAME);
         newContact.setRegistrationToken(CONTACT1_REGISTRATIONTOKEN);
         newContact.setOs(CONTACT1_OS);
@@ -69,13 +69,13 @@ public class ContactControllerTest {
     public void testCreate(){
         long oldContacts = contactRepository.count();
 
-        Contact newContact = new Contact();
+        MobileContact newContact = new MobileContact();
         newContact.setId(CONTACT2_ID);
         newContact.setName(CONTACT2_NAME);
         newContact.setRegistrationToken(CONTACT2_REGISTRATIONTOKEN);
         newContact.setOs(CONTACT2_OS);
         newContact.setAvailable(CONTACT2_AVAILABLE);
-        ResponseEntity<Contact> response = REST.postForEntity(URL, newContact, Contact.class);
+        ResponseEntity<MobileContact> response = REST.postForEntity(URL, newContact, MobileContact.class);
 
         assertEquals("Expecting that httpStatus CREATED returned", HttpStatus.CREATED, response.getStatusCode());
         assertEquals("Expecting that one contact was added to repository", oldContacts + 1, contactRepository.count());
@@ -84,7 +84,7 @@ public class ContactControllerTest {
     @Test
     public void testCreateWithEmptyName(){
         long oldContacts = contactRepository.count();
-        Contact invalidContact = new Contact();
+        MobileContact invalidContact = new MobileContact();
 
         // Name is null
         invalidContact.setId(CONTACT2_ID);
@@ -92,14 +92,14 @@ public class ContactControllerTest {
         invalidContact.setRegistrationToken(CONTACT2_REGISTRATIONTOKEN);
         invalidContact.setOs(CONTACT2_OS);
         invalidContact.setAvailable(CONTACT2_AVAILABLE);
-        ResponseEntity<Contact> response = REST.postForEntity(URL, invalidContact, Contact.class);
+        ResponseEntity<MobileContact> response = REST.postForEntity(URL, invalidContact, MobileContact.class);
 
         assertEquals("Expecting that httpStatus BAD REQUEST returned", HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Expecting that no contact was added to repository", oldContacts, contactRepository.count());
 
         // Name is empty string
         invalidContact.setName("");
-        response = REST.postForEntity(URL, invalidContact, Contact.class);
+        response = REST.postForEntity(URL, invalidContact, MobileContact.class);
 
         assertEquals("Expecting that httpStatus BAD REQUEST returned", HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Expecting that no contact was added to repository", oldContacts, contactRepository.count());
@@ -108,7 +108,7 @@ public class ContactControllerTest {
     @Test
     public void testCreateWithEmptyRegistrationToken(){
         long oldContacts = contactRepository.count();
-        Contact invalidContact = new Contact();
+        MobileContact invalidContact = new MobileContact();
 
         // Registration Token is null
         invalidContact.setId(CONTACT2_ID);
@@ -116,14 +116,14 @@ public class ContactControllerTest {
         invalidContact.setRegistrationToken(null);
         invalidContact.setOs(CONTACT2_OS);
         invalidContact.setAvailable(CONTACT2_AVAILABLE);
-        ResponseEntity<Contact> response = REST.postForEntity(URL, invalidContact, Contact.class);
+        ResponseEntity<MobileContact> response = REST.postForEntity(URL, invalidContact, MobileContact.class);
 
         assertEquals("Expecting that httpStatus BAD REQUEST returned", HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Expecting that no contact was added to repository", oldContacts, contactRepository.count());
 
         // Registration Token is empty string
         invalidContact.setRegistrationToken("");
-        response = REST.postForEntity(URL, invalidContact, Contact.class);
+        response = REST.postForEntity(URL, invalidContact, MobileContact.class);
 
         assertEquals("Expecting that httpStatus BAD REQUEST returned", HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Expecting that no contact was added to repository", oldContacts, contactRepository.count());
@@ -131,7 +131,7 @@ public class ContactControllerTest {
 
     @Test
     public void testReadAll(){
-        ResponseEntity<Contact[]> response = REST.getForEntity(URL, Contact[].class);
+        ResponseEntity<MobileContact[]> response = REST.getForEntity(URL, MobileContact[].class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(contactRepository.count(), response.getBody().length);
@@ -139,15 +139,15 @@ public class ContactControllerTest {
 
     @Test
     public void testUpdateWithExistingContact(){
-        Contact existingContact = contactRepository.findById(CONTACT1_ID);
+        MobileContact existingContact = contactRepository.findById(CONTACT1_ID);
         long id = existingContact.getId();
         existingContact.setName(CONTACT2_NAME);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Contact> entity = new HttpEntity<Contact>(existingContact, headers);
+        HttpEntity<MobileContact> entity = new HttpEntity<MobileContact>(existingContact, headers);
 
-        ResponseEntity<Contact> response = REST.exchange(URL + "/" + id, HttpMethod.PUT, entity, Contact.class, "");
+        ResponseEntity<MobileContact> response = REST.exchange(URL + "/" + id, HttpMethod.PUT, entity, MobileContact.class, "");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(CONTACT2_NAME, contactRepository.findById(id).getName());
@@ -155,16 +155,16 @@ public class ContactControllerTest {
 
     @Test
     public void testUpdateWithNonExistingContact(){
-        Contact existingContact = contactRepository.findById(CONTACT1_ID);
+        MobileContact existingContact = contactRepository.findById(CONTACT1_ID);
         long id = existingContact.getId();
         existingContact.setName(CONTACT2_NAME);
         existingContact.setId(192837981273l);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Contact> entity = new HttpEntity<Contact>(existingContact, headers);
+        HttpEntity<MobileContact> entity = new HttpEntity<MobileContact>(existingContact, headers);
 
-        ResponseEntity<Contact> response = REST.exchange(URL + "/" + id, HttpMethod.PUT, entity, Contact.class, "");
+        ResponseEntity<MobileContact> response = REST.exchange(URL + "/" + id, HttpMethod.PUT, entity, MobileContact.class, "");
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(CONTACT1_NAME, contactRepository.findById(id).getName());

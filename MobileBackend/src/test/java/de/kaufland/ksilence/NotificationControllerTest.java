@@ -1,8 +1,8 @@
 package de.kaufland.ksilence;
 
 import de.kaufland.ksilence.api.Api;
-import de.kaufland.ksilence.model.Contact;
-import de.kaufland.ksilence.model.Notification;
+import de.kaufland.ksilence.model.MobileContact;
+import de.kaufland.ksilence.model.MobileNotification;
 import de.kaufland.ksilence.model.OperatingSystem;
 import de.kaufland.ksilence.model.Status;
 import de.kaufland.ksilence.repository.ContactRepository;
@@ -50,7 +50,7 @@ public class NotificationControllerTest {
 
     @Test
     public void testReadAll(){
-        ResponseEntity<Notification[]> response = REST.getForEntity(URL, Notification[].class);
+        ResponseEntity<MobileNotification[]> response = REST.getForEntity(URL, MobileNotification[].class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(notificationRepository.count(), response.getBody().length);
@@ -61,13 +61,13 @@ public class NotificationControllerTest {
         long cntNotifications = notificationRepository.count();
 
         // To is 0
-        Notification newNotification = new Notification();
+        MobileNotification newNotification = new MobileNotification();
         newNotification.setId(NOT_ID);
         newNotification.setFromContactId(NOT_FROM);
         newNotification.setToContactId(0);
         newNotification.setBody(NOT_BODY);
         newNotification.setState(NOT_STATE);
-        ResponseEntity<Notification> response = REST.postForEntity(URL, newNotification, Notification.class);
+        ResponseEntity<MobileNotification> response = REST.postForEntity(URL, newNotification, MobileNotification.class);
 
         assertEquals("Expecting httpStatus BAD REQUEST", HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Expecting that no Notification added to repository", cntNotifications, notificationRepository.count());
@@ -78,13 +78,13 @@ public class NotificationControllerTest {
         long cntNotifications = notificationRepository.count();
 
         // To is 0
-        Notification newNotification = new Notification();
+        MobileNotification newNotification = new MobileNotification();
         newNotification.setId(NOT_ID);
         newNotification.setFromContactId(0);
         newNotification.setToContactId(NOT_TO);
         newNotification.setBody(NOT_BODY);
         newNotification.setState(NOT_STATE);
-        ResponseEntity<Notification> response = REST.postForEntity(URL, newNotification, Notification.class);
+        ResponseEntity<MobileNotification> response = REST.postForEntity(URL, newNotification, MobileNotification.class);
 
         assertEquals("Expecting httpStatus BAD REQUEST", HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Expecting that no Notification added to repository", cntNotifications, notificationRepository.count());
@@ -93,12 +93,12 @@ public class NotificationControllerTest {
     @Test
     public void CreateWithEmptyBody(){
         long cntNotifications = notificationRepository.count();
-        Notification newNotification = new Notification();
+        MobileNotification newNotification = new MobileNotification();
 
         // Title is null
         newNotification.setId(NOT_ID);
         newNotification.setBody(null);
-        ResponseEntity<Notification> response = REST.postForEntity(URL, newNotification, Notification.class);
+        ResponseEntity<MobileNotification> response = REST.postForEntity(URL, newNotification, MobileNotification.class);
 
         assertEquals("Expecting httpStatus BAD REQUEST", HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Expecting that no Notification added to repository", cntNotifications, notificationRepository.count());
@@ -106,7 +106,7 @@ public class NotificationControllerTest {
         // Title is empty string
         newNotification.setId(NOT_ID);
         newNotification.setBody("");
-        response = REST.postForEntity(URL, newNotification, Notification.class);
+        response = REST.postForEntity(URL, newNotification, MobileNotification.class);
 
         assertEquals("Expecting httpStatus BAD REQUEST", HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Expecting that no Notification added to repository", cntNotifications, notificationRepository.count());

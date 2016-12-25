@@ -1,12 +1,12 @@
 package de.kaufland.ksilence.repository;
 
-import de.kaufland.ksilence.model.Contact;
+import de.kaufland.ksilence.model.MobileContact;
 import org.springframework.data.repository.CrudRepository;
 
-public interface ContactRepository extends CrudRepository<Contact, Long>{
+public interface ContactRepository extends CrudRepository<MobileContact, Long>{
 
-    Iterable<Contact> findAll();
+    Iterable<MobileContact> findAll();
 
-    Contact findById(long id);
+    MobileContact findById(long id);
 
 }

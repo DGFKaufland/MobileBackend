@@ -1,6 +1,6 @@
 package de.kaufland.ksilence.service;
 
-import de.kaufland.ksilence.model.Department;
+import de.kaufland.ksilence.model.MobileDepartment;
 import de.kaufland.ksilence.repository.DepartmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ public class DepartmentService {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    public Iterable<Department> readAll() {
+    public Iterable<MobileDepartment> readAll() {
         log.debug("Read all DEPARTMENTS");
         return departmentRepository.findAll();
     }

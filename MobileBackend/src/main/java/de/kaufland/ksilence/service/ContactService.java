@@ -3,7 +3,7 @@ package de.kaufland.ksilence.service;
 import de.kaufland.ksilence.exception.EmptyParameterException;
 import de.kaufland.ksilence.exception.EntityExistsException;
 import de.kaufland.ksilence.exception.EntityNotFoundException;
-import de.kaufland.ksilence.model.Contact;
+import de.kaufland.ksilence.model.MobileContact;
 import de.kaufland.ksilence.repository.ContactRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +18,12 @@ public class ContactService {
     @Autowired
     ContactRepository contactRepository;
 
-    public Iterable<Contact> readAll() {
+    public Iterable<MobileContact> readAll() {
         log.debug("Read all CONTACTS");
         return contactRepository.findAll();
     }
 
-    public Contact create(Contact pContact) {
+    public MobileContact create(MobileContact pContact) {
         log.debug("Create CONTACT: " + pContact);
         if(pContact.getName() == null || pContact.getName().isEmpty() || pContact.getName().equals("")){
             throw new EmptyParameterException("Name");
@@ -35,9 +35,9 @@ public class ContactService {
         return contactRepository.save(pContact);
     }
 
-    public void update(Contact contact) {
+    public void update(MobileContact contact) {
         log.debug("Update CONTACT: (" + contact.getId() + ")");
-        Contact existingContact = contactRepository.findById(contact.getId());
+        MobileContact existingContact = contactRepository.findById(contact.getId());
 
         if (existingContact == null) {
             throw new EntityNotFoundException();
@@ -48,7 +48,7 @@ public class ContactService {
         }
 
         log.debug("From: " + existingContact);
-        Contact updatedContact = contactRepository.save(contact);
+        MobileContact updatedContact = contactRepository.save(contact);
         log.debug("To:   " + updatedContact);
     }
 

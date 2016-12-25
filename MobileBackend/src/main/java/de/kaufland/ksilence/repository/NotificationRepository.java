@@ -1,11 +1,11 @@
 package de.kaufland.ksilence.repository;
 
-import de.kaufland.ksilence.model.Notification;
+import de.kaufland.ksilence.model.MobileNotification;
 import org.springframework.data.repository.CrudRepository;
 
-public interface NotificationRepository extends CrudRepository<Notification, Long>{
+public interface NotificationRepository extends CrudRepository<MobileNotification, Long>{
 
-    Iterable<Notification> findAll();
+    Iterable<MobileNotification> findAll();
 
-    Notification findById(long id);
+    MobileNotification findById(long id);
 }

@@ -1,10 +1,10 @@
 package de.kaufland.ksilence.repository;
 
-import de.kaufland.ksilence.model.Department;
+import de.kaufland.ksilence.model.MobileDepartment;
 import org.springframework.data.repository.CrudRepository;
 
-public interface DepartmentRepository extends CrudRepository<Department, Long> {
+public interface DepartmentRepository extends CrudRepository<MobileDepartment, Long> {
 
-    Iterable<Department> findAll();
+    Iterable<MobileDepartment> findAll();
 
 }
