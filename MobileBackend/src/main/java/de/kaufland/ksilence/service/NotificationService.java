@@ -47,7 +47,24 @@ public class NotificationService {
             throw new EmptyParameterException("Body");
         } else if (contactRepository.findById(pNotification.getToContactId()) == null){
             throw new EntityNotFoundException();
-        } else if (contactRepository.findById(pNotification.getFromContactId()) == null){
+        
+        } 
+        
+        
+        /*
+        
+        else if (pNotification.getSnooze_time() == 0 || pNotification.getToContactId() < 0){
+        	 throw new EmptyParameterException("Snooze_time"); 
+            
+        } else if(pNotification.getMessage() == null || pNotification.getMessage() == "" || pNotification.getMessage().isEmpty()){
+            throw new EmptyParameterException("Message");
+        }
+         */
+            
+            
+            
+            
+        else if (contactRepository.findById(pNotification.getFromContactId()) == null){
             throw new EntityNotFoundException();
         }
 

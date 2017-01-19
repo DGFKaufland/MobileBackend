@@ -20,7 +20,12 @@ public class MobileNotification {
     @NotNull
     private String body;
 
+    
+    private long snooze_time;
+    private String message;
+
     private Status state;
+    
 
     public long getId() {
         return id;
@@ -57,6 +62,25 @@ public class MobileNotification {
     public void setBody(String body) {
         this.body = body;
     }
+    
+    
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    
+    
+    public long getSnooze_time() {
+        return snooze_time;
+    }
+
+    public void setSnooze_time(long snooze_time) {
+        this.snooze_time = snooze_time;
+    }
+   
 
     public Status getState() {
         return state;
