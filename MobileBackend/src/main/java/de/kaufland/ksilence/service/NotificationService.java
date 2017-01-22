@@ -77,6 +77,8 @@ public class NotificationService {
         MobileContact toContact = contactRepository.findById(pNotification.getToContactId());
         String msg = "";
 
+        
+        //hier muss evtl. noch der Snooze Modus beruecksichtig werden!!
         if(toContact.getOs() == OperatingSystem.ANDROID) {
             msg += "{";
             msg += "\"to\" : \"" + toContact.getRegistrationToken() + "\", ";
