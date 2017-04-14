@@ -3,8 +3,6 @@ package de.kaufland.ksilence.service;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import de.kaufland.ksilence.api.Api;
-import de.kaufland.ksilence.exception.EmptyParameterException;
-import de.kaufland.ksilence.exception.EntityNotFoundException;
 import de.kaufland.ksilence.model.MobileContact;
 import de.kaufland.ksilence.model.MobileNotification;
 import de.kaufland.ksilence.model.OperatingSystem;
@@ -14,6 +12,7 @@ import de.kaufland.ksilence.repository.NotificationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,7 @@ import java.net.URL;
 import java.util.List;
 
 @Service
+@EnableScheduling
 public class SnoozeService {
     private static final Logger log = LoggerFactory.getLogger(ContactService.class);
 
@@ -41,40 +41,43 @@ public class SnoozeService {
     
     
    
-    @Scheduled(cron = "0 1 1 ? * *")
-    @Scheduled(fixedRate = 30000) //Millisekunden
+    @Scheduled(fixedRate = 60000) //Millisekunden
     public void resetCache() throws IOException {
     
-   	 //GoogleGuava Methode evtl verwenden statt List
-   	 //http://stackoverflow.com/questions/23935662/print-records-from-findall-in-crudrepository
-       List <MobileNotification> test = notificationRepository.findAllList();
-       
-       for(int i=0; i<test.size(); i++)
+   	 //GoogleGuava Methode evtl verwenden
+       List <MobileNotification> allNotifications = (List <MobileNotification>) notificationRepository.findAll();
+         
+       for(int i=0; i<allNotifications.size(); i++)
        {
           
-    	   // Die Ausgabe findet fünfmal statt (von 0 bis 4)
-           System.out.println("i ist "+i);
-           Long st = test.get(i).getSnooze_time();
+           //System.out.println("i ist "+i);
+           Long st = allNotifications.get(i).getSnooze_time();
           
            if (st == 0){
            }
            else if (st > 1){
         	   //hier bitte die snooze time updaten (-1 Minute) setzen
         	   Long st_neu = st -1;
-        	   test.get(i).setSnooze_time(st_neu);
-        	   notificationRepository.save(test.get(i));
+        	   allNotifications.get(i).setSnooze_time(st_neu);
+        	   notificationRepository.save(allNotifications.get(i));
+        	   
+        	   //System.out.println("SnoozeTimeUpdateID: " + allNotifications.get(i).getId() + " Body " + allNotifications.get(i).getBody());
            }          
            else if(st <= 1){
         	   Long st_neu = st -1;
-        	   test.get(i).setSnooze_time(st_neu);
-        	   test.get(i).setState(Status.OPEN);
-        	   notificationRepository.save(test.get(i));
+        	   allNotifications.get(i).setSnooze_time(st_neu);
+        	   allNotifications.get(i).setState(Status.OPEN);
+        	   notificationRepository.save(allNotifications.get(i));
         	   
-        	   update(test.get(i));     	   
+        	   update(allNotifications.get(i)); 
+        	   
+        	   //System.out.println("SnoozeTimeUpdateAndNotificationToSmartwatch: " + allNotifications.get(i).getId() + " Body " + allNotifications.get(i).getBody());
+        	   
            }
            
            
        }
+       
        
        
     }
