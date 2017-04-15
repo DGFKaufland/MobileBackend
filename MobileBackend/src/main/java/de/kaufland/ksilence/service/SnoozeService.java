@@ -51,21 +51,24 @@ public class SnoozeService {
        {
           
            //System.out.println("i ist "+i);
-           Long st = allNotifications.get(i).getSnooze_time();
+           Long snooze_time = allNotifications.get(i).getSnooze_time();
+           Status state = allNotifications.get(i).getState();
+           //System.out.println("state " + i + " ist: " + state);
           
-           if (st == 0){
+           if (snooze_time == 0){
            }
-           else if (st > 1){
+           //&& state == state.SNOOZE
+           else if (snooze_time > 1  && state == state.SNOOZE){
         	   //hier bitte die snooze time updaten (-1 Minute) setzen
-        	   Long st_neu = st -1;
-        	   allNotifications.get(i).setSnooze_time(st_neu);
+        	   Long snooze_time_new = snooze_time -1;
+        	   allNotifications.get(i).setSnooze_time(snooze_time_new);
         	   notificationRepository.save(allNotifications.get(i));
         	   
         	   //System.out.println("SnoozeTimeUpdateID: " + allNotifications.get(i).getId() + " Body " + allNotifications.get(i).getBody());
            }          
-           else if(st <= 1){
-        	   Long st_neu = st -1;
-        	   allNotifications.get(i).setSnooze_time(st_neu);
+           else if(snooze_time <= 1 && state == state.SNOOZE){
+        	   Long snooze_time_new = snooze_time -1;
+        	   allNotifications.get(i).setSnooze_time(snooze_time_new);
         	   allNotifications.get(i).setState(Status.OPEN);
         	   notificationRepository.save(allNotifications.get(i));
         	   
