@@ -35,6 +35,45 @@ public class NotificationService {
         log.debug("Read all NOTIFICATIONS");
         return notificationRepository.findAll();
     }
+    
+    
+    
+    public MobileNotification createSamsungNotification(MobileNotification pNotification) throws IOException {
+        log.debug("Create NOTIFICATION_FOR_SAMSUNG: " + pNotification);
+
+        if(pNotification.getToContactId() == 0 || pNotification.getToContactId() < 0){
+            throw new EmptyParameterException("ToContactId");
+        } else if(pNotification.getFromContactId() == 0 || pNotification.getFromContactId() < 0){
+            throw new EmptyParameterException("FromContactId");
+        } else if(pNotification.getBody() == null || pNotification.getBody() == "" || pNotification.getBody().isEmpty()){
+            throw new EmptyParameterException("Body");
+        } else if (contactRepository.findById(pNotification.getToContactId()) == null){
+            throw new EntityNotFoundException();
+        
+        } 
+        
+
+        else if (contactRepository.findById(pNotification.getFromContactId()) == null){
+            throw new EntityNotFoundException();
+        }
+
+        // Send notification AFTER saving into DB
+        // Important, because id is needed for function of notification action buttons
+        MobileNotification newNotification = notificationRepository.save(pNotification);
+
+        // Build message maybe from and to contact is needed
+        MobileContact fromContact = contactRepository.findById(pNotification.getFromContactId());
+        MobileContact toContact = contactRepository.findById(pNotification.getToContactId());
+        String msg = "";
+
+        
+        //build message for push notification for samsung smartwatch ;)
+        
+       
+
+        return newNotification;
+    }
+    
 
     public MobileNotification create(MobileNotification pNotification) throws IOException {
         log.debug("Create NOTIFICATION: " + pNotification);

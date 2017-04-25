@@ -2,13 +2,15 @@ package de.kaufland.ksilence.api;
 
 import de.kaufland.ksilence.model.MobileNotification;
 import de.kaufland.ksilence.service.NotificationService;
+
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 
 @RestController
 public class NotificationController {
@@ -27,6 +29,12 @@ public class NotificationController {
     public ResponseEntity<MobileNotification> create(@RequestBody MobileNotification pNotification) throws IOException {
         return new ResponseEntity<MobileNotification>(notificationService.create(pNotification), HttpStatus.CREATED);
     }
+        
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = Api.Path.NOTIFICATIONS_FOR_SAMSUNG, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MobileNotification> createSamsungNotification(@RequestBody MobileNotification pNotification) throws IOException {
+        return new ResponseEntity<MobileNotification>(notificationService.createSamsungNotification(pNotification), HttpStatus.CREATED);
+    }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value=Api.Path.NOTIFICATION, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,5 +48,7 @@ public class NotificationController {
         notificationService.update(pNotification);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+    
+  
 
 }
