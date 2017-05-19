@@ -2,6 +2,7 @@ package de.kaufland.ksilence.service;
 
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
+
 import de.kaufland.ksilence.api.Api;
 import de.kaufland.ksilence.exception.EmptyParameterException;
 import de.kaufland.ksilence.exception.EntityNotFoundException;
@@ -10,6 +11,8 @@ import de.kaufland.ksilence.model.MobileNotification;
 import de.kaufland.ksilence.model.OperatingSystem;
 import de.kaufland.ksilence.repository.ContactRepository;
 import de.kaufland.ksilence.repository.NotificationRepository;
+
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +65,61 @@ public class NotificationService {
         MobileNotification newNotification = notificationRepository.save(pNotification);
 
         // Build message maybe from and to contact is needed
-        MobileContact fromContact = contactRepository.findById(pNotification.getFromContactId());
-        MobileContact toContact = contactRepository.findById(pNotification.getToContactId());
-        String msg = "";
-
+        //MobileContact fromContact = contactRepository.findById(pNotification.getFromContactId());
+        //MobileContact toContact = contactRepository.findById(pNotification.getToContactId());
+        
         
         //build message for push notification for samsung smartwatch ;)
+        JSONObject notification = new JSONObject();
+		notification.put("subject", "Temperaturüberschreitung!!");
+		notification.put("text", pNotification.getBody());
+		notification.put("evtCreated", "22017-03-23T08:02:13.541+01:00");
+		notification.put("evtVisible", "2017-03-25T08:02:13.541+01:00");
+		notification.put("evtDoneTill", "2017-04-10T08:02:13.541+01:00");
+		notification.put("priority", "Medium");
+		notification.put("creator", "3");
+		notification.put("requester", "Erik Bauer");
+		notification.put("receiver", "18470605");
+		notification.put("user", "18564765");
+		notification.put("team", "18470605");
+		notification.put("market", "300049");
+		notification.put("status", "0");
+		String msg = notification.toString();
         
-       
+
+        		System.out.println("Message:" + msg);
+        
+
+        String userpass = "fheu1807" + ":" + "jRsBsi!";
+        String basicAuth = "Basic " + javax.xml.bind.DatatypeConverter.printBase64Binary(userpass.getBytes());
+
+        
+        
+        URL url = new URL("https://iawmseg.kaufland.net:2443/ws/vs_KL_TMS/task/");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("ApiKey", "ZyUevuMrfL16JLAc4e3f");
+        conn.setRequestProperty("userCode", "1234");
+        conn.setRequestProperty("Authorization", basicAuth);
+
+        OutputStream out = conn.getOutputStream();
+        Writer writer = new OutputStreamWriter(out, "UTF-8");
+        writer.write(msg);
+        writer.close();
+        out.close();
+
+        int responseCode = conn.getResponseCode();
+        if(responseCode == 200){
+           System.out.println("NOTIFICATION send to SamsungTizen Server:    " + pNotification.getBody());
+        	log.debug("NOTIFICATION send to SamsungTizen Server");
+        } else {
+        	System.out.println("NOTIFICATION not send to Samsung Tizen Server. Response code: " + responseCode);
+            log.debug("NOTIFICATION not send to Samsung Tizen Server. Response code: " + responseCode);
+        }
+        conn.disconnect();
+        
 
         return newNotification;
     }
