@@ -73,16 +73,16 @@ public class NotificationService {
         JSONObject notification = new JSONObject();
 		notification.put("subject", "Temperaturüberschreitung!!");
 		notification.put("text", pNotification.getBody());
-		notification.put("evtCreated", "22017-03-23T08:02:13.541+01:00");
-		notification.put("evtVisible", "2017-03-25T08:02:13.541+01:00");
-		notification.put("evtDoneTill", "2017-04-10T08:02:13.541+01:00");
+		notification.put("evtCreated", "22017-05-18T08:02:13.541+01:00");
+		notification.put("evtVisible", "2017-05-18T08:02:13.541+01:00");
+		notification.put("evtDoneTill", "2017-05-30T08:02:13.541+01:00");
 		notification.put("priority", "Medium");
 		notification.put("creator", "3");
 		notification.put("requester", "Erik Bauer");
 		notification.put("receiver", "18470605");
-		notification.put("user", "18564765");
-		notification.put("team", "18470605");
-		notification.put("market", "300049");
+		notification.put("user", "327971222");
+		notification.put("team", "333968079");
+		notification.put("market", "1052282");
 		notification.put("status", "0");
 		String msg = notification.toString();
         
