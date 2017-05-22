@@ -35,6 +35,13 @@ public class NotificationController {
     public ResponseEntity<MobileNotification> createSamsungNotification(@RequestBody MobileNotification pNotification) throws IOException {
         return new ResponseEntity<MobileNotification>(notificationService.createSamsungNotification(pNotification), HttpStatus.CREATED);
     }
+    
+    
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = Api.Path.TEST, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MobileNotification> test(@RequestBody MobileNotification pNotification) throws IOException {
+        return new ResponseEntity<MobileNotification>(notificationService.test(pNotification), HttpStatus.CREATED);
+    }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value=Api.Path.NOTIFICATION, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
