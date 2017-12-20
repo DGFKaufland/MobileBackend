@@ -66,7 +66,7 @@ public class NotificationService {
         
         //build message for push notification for samsung smartwatch ;)
         JSONObject notification = new JSONObject();
-		notification.put("subject", "Temperaturüberschreitung!!");
+		notification.put("subject", "Mülleimer kontrollieren !!");
 		notification.put("text", pNotification.getBody());
 		notification.put("evtCreated", "22017-05-18T08:02:13.541+01:00");
 		notification.put("evtVisible", "2017-05-18T08:02:13.541+01:00");
